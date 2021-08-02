@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Customer</title>
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" />
+</head>
+<body>
+  <div id="container">
+      <h2>Add customer</h2>
+      <form action="#" th:action="@{/customer/addCustomerForm}" th:object="${customer}" method="post">
+          <table>
+              <tr>
+                  <td><label>First Name</label></td>
+                  <td><input type="text" th:field="*{firstName}" /></td>
+                  <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+              </tr>
+              <tr>
+                  <td><label>Last Name</label></td>
+                  <td><input type="text" th:field="*{lastName}" /></td>
+                  <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+              </tr>
+              <tr>
+                  <td><label>Email</label></td>
+                  <td><input type="text" th:field="*{email}" /></td>
+                  <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+              </tr>
+              <tr>
+                  <td><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td>
+              </tr>
+          </table>
+      </form>
+      <a href = "/customer/list">Go back to the customer list</a>
+  </div>
+</body>
+</html>

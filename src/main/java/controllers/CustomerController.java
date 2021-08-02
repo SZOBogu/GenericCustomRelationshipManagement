@@ -26,4 +26,13 @@ public class CustomerController {
 
         return "listCustomers";
     }
+
+    @RequestMapping("/addCustomerForm")
+    public String getAddCustomerForm(Model model){
+        CustomerEntity customer = new CustomerEntity();
+
+        model.addAttribute("customer", customer);
+
+        return "addCustomerForm";
+    }
 }
