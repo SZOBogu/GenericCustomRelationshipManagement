@@ -24,6 +24,7 @@
             <td th:text="${customer.getEmail()}"></td>
             <td th:text="${customer.getId()}"></td>
             <td><a th:href="@{/customer/updateCustomerForm/{id}(id=${customer.getId()})}">Update</a></td>
+            <td><a th:href="@{/customer/deleteCustomer/{id}(id=${customer.getId()})}" onclick="if (!(confirm('Sure?'))) return false">Delete</a></td>
         </tr>
     </table>
 </div>

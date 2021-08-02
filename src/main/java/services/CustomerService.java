@@ -8,4 +8,5 @@ public interface CustomerService {
     List<CustomerEntity> getCustomers();
     void addCustomer(CustomerEntity customer);
     CustomerEntity getCustomer(int id);
+    void deleteCustomer(int id);
 }
