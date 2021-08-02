@@ -18,7 +18,11 @@ public class CustomerDAOImpl implements CustomerDAO{
 
     @Override
     public void saveCustomer(CustomerEntity customer) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.beginTransaction();
 
+        session.save(customer);
+        session.getTransaction().commit();
     }
 
     @Override
@@ -32,7 +36,7 @@ public class CustomerDAOImpl implements CustomerDAO{
         session.beginTransaction();
 
         Query<CustomerEntity> query =
-                session.createQuery(" from CustomerEntity ", CustomerEntity.class);
+                session.createQuery(" from CustomerEntity order by lastName", CustomerEntity.class);
 
         return query.getResultList();
     }
