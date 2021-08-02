@@ -9,6 +9,7 @@
   <div id="container">
       <h2>Add customer</h2>
       <form action="#" th:action="@{/customer/addCustomer}" th:object="${customer}" method="post">
+          <td><input type="hidden" th:field="*{id}" /></td>
           <table>
               <tr>
                   <td><label>First Name</label></td>

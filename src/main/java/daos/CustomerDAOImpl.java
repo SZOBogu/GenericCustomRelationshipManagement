@@ -6,8 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -21,13 +19,19 @@ public class CustomerDAOImpl implements CustomerDAO{
         Session session = this.sessionFactory.getCurrentSession();
         session.beginTransaction();
 
-        session.save(customer);
+        session.saveOrUpdate(customer);
         session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public CustomerEntity getCustomer(int i) {
-        return null;
+        Session session = this.sessionFactory.getCurrentSession();
+        session.beginTransaction();
+
+        CustomerEntity customer = session.get(CustomerEntity.class, i);
+        session.close();
+        return customer;
     }
 
     @Override
@@ -38,12 +42,9 @@ public class CustomerDAOImpl implements CustomerDAO{
         Query<CustomerEntity> query =
                 session.createQuery(" from CustomerEntity order by lastName", CustomerEntity.class);
 
-        return query.getResultList();
-    }
-
-    @Override
-    public void updateCustomer(CustomerEntity customer) {
-
+        List<CustomerEntity> customerEntityList = query.getResultList();
+        session.close();
+        return customerEntityList;
     }
 
     @Override

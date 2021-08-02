@@ -15,12 +15,15 @@
             <th>Last Name</th>
             <th>E-mail</th>
             <th>ID</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
         <tr th:each="customer: ${customers}">
             <td th:text="${customer.getFirstName()}"></td>
             <td th:text="${customer.getLastName()}"></td>
             <td th:text="${customer.getEmail()}"></td>
             <td th:text="${customer.getId()}"></td>
+            <td><a th:href="@{/customer/updateCustomerForm/{id}(id=${customer.getId()})}">Update</a></td>
         </tr>
     </table>
 </div>
