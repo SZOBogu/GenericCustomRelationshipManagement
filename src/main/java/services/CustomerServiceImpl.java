@@ -1,6 +1,6 @@
 package services;
 
-import daos.CustomerDAO;
+import daos.ICustomerDAO;
 import entities.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,29 +11,29 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService{
     @Autowired
-    private CustomerDAO customerDAO;
+    private ICustomerDAO ICustomerDAO;
 
     @Override
     @Transactional
     public List<CustomerEntity> getCustomers() {
-        return this.customerDAO.getCustomers();
+        return this.ICustomerDAO.getCustomers();
     }
 
     @Override
     @Transactional
     public void addCustomer(CustomerEntity customer) {
-        this.customerDAO.saveCustomer(customer);
+        this.ICustomerDAO.saveCustomer(customer);
     }
 
     @Override
     @Transactional
     public CustomerEntity getCustomer(int id) {
-        return this.customerDAO.getCustomer(id);
+        return this.ICustomerDAO.getCustomer(id);
     }
 
     @Override
     @Transactional
     public void deleteCustomer(int id) {
-        this.customerDAO.deleteCustomer(id);
+        this.ICustomerDAO.deleteCustomer(id);
     }
 }

@@ -10,5 +10,4 @@ public class BasicGenericCustomRelationShipManagementApplication {
     public static void main(String[] args) {
         SpringApplication.run(BasicGenericCustomRelationShipManagementApplication.class, args);
     }
-
 }

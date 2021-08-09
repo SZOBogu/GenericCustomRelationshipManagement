@@ -15,7 +15,6 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-
     @GetMapping("/list")
     public String getCustomerList(Model model){
         List<CustomerEntity> customers = this.customerService.getCustomers();
