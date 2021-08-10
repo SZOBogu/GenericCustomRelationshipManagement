@@ -19,12 +19,14 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        System.out.println(this.getClass() + ": login Success");
+
         String username = authentication.getName();
         UserEntity userEntity = userService.findUserByUsername(username);
 
         HttpSession session = request.getSession();
         session.setAttribute("user", userEntity);
 
-        response.sendRedirect("/");
+        response.sendRedirect("http://localhost:8080/customer/list");
     }
 }

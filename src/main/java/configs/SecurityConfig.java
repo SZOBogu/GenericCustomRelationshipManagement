@@ -21,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAuthenticationSuccessHandler authenticationSuccessHandler;
 
+    @Autowired
+    private MyAuthenticationFailureHandler authenticationFailureHandler;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -32,8 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public MyAuthenticationFailureHandler myAuthenticationFailureHandler(){
+        return new MyAuthenticationFailureHandler();
+    }
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        System.out.println(getClass() + ": " + userService);
         authenticationProvider.setUserDetailsService(this.userService);
         authenticationProvider.setPasswordEncoder(this.passwordEncoder());
 
@@ -54,8 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .formLogin()
                     .loginPage("/loginPage")
-                    .loginProcessingUrl("/authenticateUser")
+                    .loginProcessingUrl("/login")
                     .successHandler(this.authenticationSuccessHandler)
+                    .failureHandler(this.authenticationFailureHandler)
                 .permitAll()
         .and()
                 .logout().permitAll()

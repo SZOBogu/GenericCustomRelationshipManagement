@@ -1,10 +1,13 @@
 package daos;
 
 import entities.CustomerEntity;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +18,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public void saveCustomer(CustomerEntity customer) {
-        Session session = this.sessionFactory.getCurrentSession();
+        Session session = this.getSession();
         session.beginTransaction();
 
         session.saveOrUpdate(customer);
@@ -25,7 +28,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public CustomerEntity getCustomer(int i) {
-        Session session = this.sessionFactory.getCurrentSession();
+        Session session = this.getSession();
         session.beginTransaction();
 
         CustomerEntity customer = session.get(CustomerEntity.class, i);
@@ -35,7 +38,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public List<CustomerEntity> getCustomers() {
-        Session session = this.sessionFactory.getCurrentSession();
+        Session session = this.getSession();
         session.beginTransaction();
 
         Query<CustomerEntity> query =
@@ -48,7 +51,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public void deleteCustomer(int id) {
-        Session session = this.sessionFactory.getCurrentSession();
+        Session session = this.getSession();
         session.beginTransaction();
 
 
@@ -63,5 +66,16 @@ public class CustomerDAO implements ICustomerDAO {
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    private Session getSession(){
+        Session session = null;
+        try{
+            session = sessionFactory.getCurrentSession();
+        }
+        catch (HibernateException e){
+            session = sessionFactory.openSession();
+        }
+        return session;
     }
 }
