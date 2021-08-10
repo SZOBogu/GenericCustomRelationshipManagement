@@ -11,8 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import services.IUserService;
 
-@EnableWebSecurity
+
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private IUserService userService;
@@ -47,9 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/customer/addCustomerForm", "/customer/addCustomer").hasAnyRole("MANAGER", "ADMIN")
-                    .antMatchers("/customer/updateCustomerForm/**", "/customer/deleteCustomer/**").hasRole("ADMIN")
-                    .antMatchers("/customer/**").hasRole("EMPLOYEE")
-                    .antMatchers("/login/**", "/logout/**").permitAll();
+                .antMatchers("/customer/addCustomerForm", "/customer/addCustomer").hasAnyRole("MANAGER", "ADMIN")
+                .antMatchers("/customer/updateCustomerForm/**", "/customer/deleteCustomer/**").hasRole("ADMIN")
+                .antMatchers("/customer/**","/").hasRole("EMPLOYEE")
+        .and()
+                .formLogin()
+                    .loginPage("/loginPage")
+                    .loginProcessingUrl("/authenticateUser")
+                    .successHandler(this.authenticationSuccessHandler)
+                .permitAll()
+        .and()
+                .logout().permitAll()
+        .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied");
     }
 }
