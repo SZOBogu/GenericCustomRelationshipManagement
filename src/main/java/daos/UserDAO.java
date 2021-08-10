@@ -28,7 +28,7 @@ public class UserDAO implements IUserDAO{
             session = sessionFactory.openSession();
         }
 
-
+        session.getTransaction().begin();
         Query<UserEntity> query = session.createQuery("from UserEntity where username =: nameOfUser", UserEntity.class);
         query.setParameter("nameOfUser", username);
 
@@ -38,10 +38,12 @@ public class UserDAO implements IUserDAO{
 
         try{
             user = query.getSingleResult();
+            System.out.println(user.getRoleEntityListEntityList());
         }
         catch(Exception e){
             assert true; //do nothing
         }
+        session.close();
         return user;
     }
 
@@ -56,8 +58,10 @@ public class UserDAO implements IUserDAO{
         catch (HibernateException e){
             session = sessionFactory.openSession();
         }
-
+        session.getTransaction().begin();
         session.saveOrUpdate(user);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Autowired

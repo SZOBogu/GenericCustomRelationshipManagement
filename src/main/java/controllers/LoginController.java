@@ -7,16 +7,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LoginController {
-    @GetMapping("/loginPage")
-    public String getLoginPage(){
+
+    @GetMapping("/")
+    public String home(){
+        return "home";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        System.out.println("LoginController /login");
         return "login";
     }
 
-    @RequestMapping("/login-error")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login";
-    }
+//    @RequestMapping("/login-error")
+//    public String loginError(Model model) {
+//        model.addAttribute("loginError", true);
+//        return "login";
+//    }
 
     @RequestMapping("/accessDenied")
     public String getAccessDeniedPage(){
@@ -27,4 +34,6 @@ public class LoginController {
     public String getLoginFailurePage(){
         return "loginFailure";
     }
+
+
 }

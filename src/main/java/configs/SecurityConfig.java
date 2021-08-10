@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import services.IUserService;
 
 
@@ -63,12 +64,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .formLogin()
                     .loginPage("/loginPage")
-                    .loginProcessingUrl("/login")
-                    .successHandler(this.authenticationSuccessHandler)
-                    .failureHandler(this.authenticationFailureHandler)
+                    .loginProcessingUrl("/authenticateUser")
+//                    .successHandler(this.authenticationSuccessHandler)
+//                    .failureHandler(this.authenticationFailureHandler)
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/customer/list", true)
                 .permitAll()
         .and()
-                .logout().permitAll()
+                .logout()
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
         .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied");
     }
